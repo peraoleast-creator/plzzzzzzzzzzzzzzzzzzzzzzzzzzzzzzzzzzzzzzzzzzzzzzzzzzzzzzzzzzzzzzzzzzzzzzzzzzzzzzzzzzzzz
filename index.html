@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Miss Laiba har gift mein pyar · mare tarf say</title>
+    <style>
+        /* reset + romantic dreamy base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', 'Noto Nastaliq Urdu', system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(150deg, #fce4ec 0%, #ffd9e8 70%, #ffe0f0 100%);
+            min-height: 100vh;
+            padding: 20px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+        }
+
+        /* main card – beautiful glass theme */
+        .love-container {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 245, 250, 0.75);
+            backdrop-filter: blur(18px) saturate(160%);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+            border-radius: 48px 48px 40px 40px;
+            box-shadow: 0 30px 50px rgba(160, 60, 100, 0.3),
+                        0 0 0 2px rgba(255, 200, 225, 0.7) inset,
+                        0 10px 20px #fec5d9;
+            padding: 28px 18px 38px 18px;
+            border: 1px solid #ffb0ca;
+        }
+
+        .header-dua {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .header-dua h1 {
+            font-size: 2.4rem;
+            font-weight: 600;
+            background: linear-gradient(130deg, #b3406c, #d85f8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+            text-shadow: 0 8px 18px #f6b0c8;
+        }
+
+        .header-dua .sub {
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 8px 22px;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+            color: #a53860;
+            border: 1px solid #ffb0c3;
+            display: inline-block;
+        }
+
+        /* === gifts grid — bhooot sare (EACH BUTTON NOW TRIGGERS UNIQUE POPUP) === */
+        .gifts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 30px 0 28px;
+        }
+
+        .gift-item {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 40px 16px 40px 16px;
+            padding: 16px 6px;
+            text-align: center;
+            border: 1px solid #ffa5c3;
+            box-shadow: 0 6px 14px #fbb6c6;
+            color: #ad3f6b;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            transition: transform 0.1s ease, box-shadow 0.2s;
+            cursor: pointer;  /* make it clear it's clickable */
+        }
+
+        .gift-item:active {
+            transform: scale(0.96);
+            background: #ffe2f0;
+        }
+
+        .gift-emoji {
+            font-size: 2.3rem;
+            filter: drop-shadow(0 6px 8px #e6aabc);
+            pointer-events: none;  /* so click goes to parent */
+        }
+
+        .gift-text {
+            font-size: 0.9rem;
+            background: #fec5d9b0;
+            padding: 4px 12px;
+            border-radius: 40px;
+            white-space: nowrap;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            pointer-events: none;
+        }
+
+        /* mini poetry with updated signature */
+        .mini-gift-poetry {
+            background: #fceaeff5;
+            border-radius: 30px 8px 30px 8px;
+            margin: 25px 0 10px;
+            padding: 20px 10px;
+            border: 2px solid #ffb6d1;
+            text-align: center;
+        }
+        .mini-gift-poetry p {
+            font-size: 1.35rem;
+            margin: 10px 0;
+            color: #602842;
+        }
+        .signature-mini {
+            font-size: 1.2rem;
+            background: #fcc6d7;
+            padding: 6px 16px;
+            border-radius: 40px;
+            display: inline-block;
+        }
+
+        /* suspense button – still opens general popup (optional) */
+        .popup-trigger-btn {
+            background: #ffb3c6;
+            color: #631f38;
+            padding: 18px 12px;
+            border-radius: 60px 20px 60px 20px;
+            font-size: 1.7rem;
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 4px 10px #f598b2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.2s;
+            margin: 20px 0 18px;
+        }
+        .popup-trigger-btn:active {
+            transform: scale(0.98);
+            background: #ffa7bd;
+        }
+
+        /* ===== POPUP MODAL (single overlay used for all gifts) ===== */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .popup-card {
+            max-width: 450px;
+            width: 90%;
+            background: #fff9fb;
+            border-radius: 60px 20px 60px 20px;
+            padding: 32px 20px 28px;
+            box-shadow: 0 40px 60px #bf6f8f, 0 0 0 6px #ffe2f0, 0 0 0 10px #fec7db;
+            text-align: center;
+            border: 3px solid white;
+            animation: floatPop 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+            position: relative;
+        }
+
+        @keyframes floatPop {
+            0% { opacity: 0; transform: scale(0.8) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .popup-card .poetry-block {
+            margin: 10px 0;
+        }
+        .popup-card .poetry-line {
+            font-size: 1.8rem;
+            line-height: 2.4rem;
+            margin-bottom: 18px;
+            color: #2d132c;
+            font-weight: 400;
+        }
+        .popup-card .signature {
+            font-size: 1.7rem;
+            background: #ffe3ee;
+            padding: 12px 12px;
+            border-radius: 60px;
+            color: #a1335b;
+            border: 1px solid #f596b3;
+            margin: 20px 0 5px;
+        }
+        .close-popup-btn {
+            margin-top: 20px;
+            background: #d65f8a;
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            border: 2px solid #ffd2e2;
+            box-shadow: 0 4px 0 #752e4d;
+            transition: 0.1s ease;
+            font-weight: 600;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .close-popup-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #752e4d;
+        }
+
+        /* close (X) top */
+        .popup-close-x {
+            position: absolute;
+            top: 16px; right: 22px;
+            font-size: 2.4rem;
+            color: #a53860;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .popup-close-x:hover {
+            background: #ffd6e4;
+        }
+
+        .popup-overlay.show {
+            display: flex;
+        }
+
+        /* mobile responsive */
+        @media (max-width: 420px) {
+            .love-container { padding: 18px 12px; }
+            .header-dua h1 { font-size: 2rem; }
+            .gifts-grid { gap: 6px; }
+            .popup-card { padding: 25px 15px; }
+            .popup-card .poetry-line { font-size: 1.5rem; }
+        }
+
+        /* extra decor */
+        .flower-decor {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            font-size: 2rem;
+            margin: 10px 0;
+        }
+        .footer-sign {
+            text-align: center;
+            font-size: 1.3rem;
+            background: #ffd9e7;
+            padding: 12px;
+            border-radius: 80px;
+            margin: 16px 0 6px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="love-container">
+    <!-- header -->
+    <div class="header-dua">
+        <h1>💕 Miss Laiba 💕</h1>
+        <div class="sub">mere <span>pyar ki mehek</span> 🌸</div>
+        <div class="sub">tap on every box plzzzzzzzzzz Queen</div>
+    </div>
+
+    <!-- bhooot saare gifts — EACH BUTTON NOW CLICKABLE and opens unique popup -->
+    <div class="gifts-grid">
+        <!-- gift 1: 💐 gulab ka phool -->
+        <div class="gift-item" data-gift="gulab">
+            <span class="gift-emoji">💐</span>
+            <span class="gift-text">gulab ka phool</span>
+        </div>
+        <!-- gift 2: 🍫 chocolate box -->
+        <div class="gift-item" data-gift="chocolate">
+            <span class="gift-emoji">🍫</span>
+            <span class="gift-text">chocolate box</span>
+        </div>
+        <!-- gift 3: 🕊️ sukoon e dil -->
+        <div class="gift-item" data-gift="sukoon">
+            <span class="gift-emoji">🕊️</span>
+            <span class="gift-text">sukoon e dil</span>
+        </div>
+        <!-- gift 4: ✨ chaand sitare -->
+        <div class="gift-item" data-gift="chaand">
+            <span class="gift-emoji">✨</span>
+            <span class="gift-text">chaand sitare</span>
+        </div>
+        <!-- gift 5: 🌙 raat ki rani -->
+        <div class="gift-item" data-gift="raat">
+            <span class="gift-emoji">🌙</span>
+            <span class="gift-text">raat ki rani</span>
+        </div>
+        <!-- gift 6: 🎀 pyaar ka gift -->
+        <div class="gift-item" data-gift="pyaar">
+            <span class="gift-emoji">🎀</span>
+            <span class="gift-text">pyaar ka gift</span>
+        </div>
+        <!-- gift 7: 💎 dil ka heera -->
+        <div class="gift-item" data-gift="heera">
+            <span class="gift-emoji">💎</span>
+            <span class="gift-text">dil ka heera</span>
+        </div>
+        <!-- gift 8: ☕ chai ki pyaali -->
+        <div class="gift-item" data-gift="chai">
+            <span class="gift-emoji">☕</span>
+            <span class="gift-text">chai ki pyaali</span>
+        </div>
+        <!-- gift 9: 💌 mehboob ka khat -->
+        <div class="gift-item" data-gift="khat">
+            <span class="gift-emoji">💌</span>
+            <span class="gift-text">mehboob ka khat</span>
+        </div>
+    </div>
+
+    <!-- mini poetry with NEW signature (mare tarf say Miss Laiba) -->
+    <div class="mini-gift-poetry">
+        <p>💖 "teri zulfon ka saya, mera dil chura laya" 💖</p>
+        <p>✨ "har subah teri muskaan, mujhe sukoon pohchaaye" ✨</p>
+        <div class="signature-mini">💫 mare tarf say Miss Laiba 💫</div>
+    </div>
+
+    <!-- suspense button – still opens general popup (optional, but we keep it) -->
+    <div class="popup-trigger-btn" id="showPopupBtn">
+        <span>🔮</span>Tap karo World's Cutest Girl <span>🔮</span>
+    </div>
+
+    <!-- visible poetry block with updated signature -->
+    <div style="background: #ffe9f1; border-radius: 30px; padding: 20px 10px; margin: 15px 0 5px;">
+        <p style="font-size: 1.5rem;">🌸 "teri batein, teri yadein, dil ke kareeb hain" 🌸</p>
+        <p style="font-size: 1.4rem;">🌙 "raat bhar hum tumhare khwab bun rahe hain" 🌙</p>
+        <p style="font-size: 1.3rem; background: #fecae1; border-radius: 30px; padding: 10px; margin-top: 12px;">
+            💕 mare tarf say Miss Laiba 💕
+        </p>
+    </div>
+
+    <!-- final assurance line with exact required signature -->
+    <div class="flower-decor">
+        <span>🌷</span> <span>🌹</span> <span>🌷</span>
+    </div>
+    <div class="footer-sign">
+        💖 Just for youuuuuuuuuuuuuuuuuuuu💖
+    </div>
+</div>
+
+<!-- ===== SINGLE POPUP OVERLAY (content changes based on gift) ===== -->
+<div class="popup-overlay" id="popupOverlay">
+    <div class="popup-card">
+        <!-- close X -->
+        <span class="popup-close-x" id="closePopupX">&times;</span>
+
+        <!-- dynamic content will be injected by js -->
+        <div class="poetry-block" id="popupDynamicContent">
+            <!-- default content (will be replaced) -->
+            <div class="poetry-line">💞 "teri hansi ho jaise subah ki pehli kiran"</div>
+            <div class="poetry-line">💞 "teri zulfon mein kho jaun, ban ke resham doriyan"</div>
+            <div class="signature">🤍 mare tarf say Miss Laiba 🤍</div>
+        </div>
+
+        <!-- close button -->
+        <button class="close-popup-btn" id="closePopupBtn">بند کریں</button>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // get elements
+        const overlay = document.getElementById('popupOverlay');
+        const closeX = document.getElementById('closePopupX');
+        const closeBtn = document.getElementById('closePopupBtn');
+        const popupContent = document.getElementById('popupDynamicContent');
+        
+        // also the general suspense button (optional)
+        const showBtn = document.getElementById('showPopupBtn');
+
+        // --- data for each gift: beautiful poetry (each ends with mare tarf say Miss Laiba)
+        const giftMessages = {
+            gulab: {
+                line1: '💐 "ye gulab tumhare liye, khushbu liye hain"',
+                line2: '🌸 "khilte ho tum to lagta hai, dil ka chaman meheka"',
+                extra: '💖 aaj ka ye tohfa qubool karo'
+            },
+            chocolate: {
+                line1: '🍫 "mithai si baatein, chahat ka safar"',
+                line2: '🍬 "tumse milkar meetha ho jaata hai har pal"',
+                extra: '✨ chahat ki mithai'
+            },
+            sukoon: {
+                line1: '🕊️ "sukoon tumhari baahon mein hai"',
+                line2: '🌿 "dil ka chain, rooh ka sakoon, sab tumse hai"',
+                extra: '💫 meri mann ki shaanti'
+            },
+            chaand: {
+                line1: '✨ "chaand sitare, tumhari roshni"',
+                line2: '🌌 "raat ki tanhai mein tum hi ho roshni"',
+                extra: '🌙 aankhon ke taare'
+            },
+            raat: {
+                line1: '🌙 "raat ki rani khushbu ki tarha"',
+                line2: '🌸 "tum mehki raaton mein bhi yaad aate ho"',
+                extra: '🌺 raaton ke Raja'
+            },
+            pyaar: {
+                line1: '🎀 "pyaar ka gift ye dil hai tumhara"',
+                line2: '💞 "har dhadkan tumse kahe, hum tumse kitna pyar karte hain"',
+                extra: '💝 dil ki amanat'
+            },
+            heera: {
+                line1: '💎 "dil ka heera tumse hai mukammal"',
+                line2: '✨ "tum jaise qeemti ho, paakar khud ko khushnaseeb samjha"',
+                extra: '🌟 qeemti rishta'
+            },
+            chai: {
+                line1: '☕ "chai ki pyaali ho ya baarish ki boondein"',
+                line2: '🌧️ "har mausam mein tumhara saath chahiye"',
+                extra: '🍵 adhuri si chai'
+            },
+            khat: {
+                line1: '💌 "mehboob ka khat likha hai dil ki zaban par"',
+                line2: '📜 "har lafz mein likha hai, tumse mohabbat hai"',
+                extra: '✉️ khat-e-mohabbat'
+            }
+        };
+
+        // default message (for suspense button or fallback)
+        const defaultPoetry = {
+            line1: '💞 "teri hansi ho jaise subah ki pehli kiran"',
+            line2: '💞 "teri zulfon mein kho jaun, ban ke resham doriyan"',
+            line3: '💞 "tu jo mile to lagta hai mil gaya ye jahan"',
+            line4: '💞 "dil ki har baat keh di, aankhon ki zubaan"'
+        };
+
+        // function to open popup with custom message
+        function openPopupWithGift(giftKey) {
+            // get message based on key, fallback to default
+            const msg = giftMessages[giftKey] || defaultPoetry;
+            
+            // build html content
+            let html = '';
+            if (giftKey === 'suspense' || !giftMessages[giftKey]) {
+                // suspense / default
+                html = `
+                    <div class="poetry-line">${defaultPoetry.line1}</div>
+                    <div class="poetry-line">${defaultPoetry.line2}</div>
+                    <div class="poetry-line">${defaultPoetry.line3}</div>
+                    <div class="poetry-line">${defaultPoetry.line4}</div>
+                    <div class="signature">🤍 mare tarf say Miss Laiba 🤍</div>
+                `;
+            } else {
+                // gift message: two lines + extra line (optional) + signature
+                html = `
+                    <div class="poetry-line">${msg.line1}</div>
+                    <div class="poetry-line">${msg.line2}</div>
+                    ${msg.extra ? `<div class="poetry-line" style="font-size:1.6rem;">${msg.extra}</div>` : ''}
+                    <div class="signature">🤍 mare tarf say Miss Laiba 🤍</div>
+                `;
+            }
+            
+            popupContent.innerHTML = html;
+            overlay.classList.add('show');
+        }
+
+        // attach click to all gift-item buttons
+        const giftButtons = document.querySelectorAll('.gift-item');
+        giftButtons.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const giftType = this.getAttribute('data-gift'); // gulab, chocolate, etc.
+                openPopupWithGift(giftType);
+            });
+        });
+
+        // suspense button (chupi hui poetry) opens default/suspense popup
+        if (showBtn) {
+            showBtn.addEventListener('click', function() {
+                // use 'suspense' key to force default poetry
+                openPopupWithGift('suspense');  // no giftMessages key -> falls to default
+            });
+        }
+
+        // close popup functions
+        function closePopup() {
+            overlay.classList.remove('show');
+        }
+
+        closeX.addEventListener('click', closePopup);
+        closeBtn.addEventListener('click', closePopup);
+
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) {
+                closePopup();
+            }
+        });
+
+        window.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && overlay.classList.contains('show')) {
+                closePopup();
+            }
+        });
+
+        // additional: if any gift not opening due to missing data, still fine.
+    })();
+</script>
+
+</body>
+</html>
