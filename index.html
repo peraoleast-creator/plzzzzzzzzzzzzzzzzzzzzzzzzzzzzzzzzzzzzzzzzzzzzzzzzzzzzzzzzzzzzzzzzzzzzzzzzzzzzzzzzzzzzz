@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>forgive me plzzzzzzzzz</title>
+  <!-- fonts & base styles -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500&family=Tangerine:wght@700&display=swap" rel="stylesheet">
+  <!-- EmailJS SDK -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(ellipse at 40% 70%, #0b0d2c, #030514);
+      font-family: 'Quicksand', sans-serif;
+      color: #fbe9f0;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #magic-particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .content {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+      backdrop-filter: blur(1px);
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 1.2rem;
+      animation: gentleFadeIn 2.4s ease-out;
+    }
+
+    .glowing-title {
+      font-family: 'Tangerine', cursive;
+      font-size: clamp(3.2rem, 18vw, 7rem);
+      font-weight: 700;
+      color: #ffe9fb;
+      text-shadow: 
+        0 0 12px #ffaad5,
+        0 0 30px #bf8cff,
+        0 0 60px #5b438a;
+      letter-spacing: 2px;
+      margin-bottom: 0.25rem;
+      line-height: 1.1;
+      animation: softPulse 4s infinite alternate;
+    }
+
+    .glowing-title span {
+      display: inline-block;
+      animation: shimmer 6s infinite;
+    }
+
+    .glass-message {
+      max-width: 580px;
+      width: 95%;
+      background: rgba(18, 14, 38, 0.3);
+      backdrop-filter: blur(14px) saturate(180%);
+      -webkit-backdrop-filter: blur(14px) saturate(180%);
+      border: 1px solid rgba(255, 200, 235, 0.3);
+      border-radius: 50px 20px 50px 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(230, 150, 255, 0.5), inset 0 0 40px rgba(255, 220, 255, 0.2);
+      padding: 2rem 1.5rem;
+      margin: 1.5rem 0;
+      text-align: center;
+      transition: transform 0.4s ease;
+      animation: floatIn 2s;
+    }
+
+    .glass-message:hover {
+      transform: scale(1.01) translateY(-5px);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 50px #ecb0ff;
+    }
+
+    .message-text {
+      font-size: clamp(1rem, 4.5vw, 2rem);
+      font-weight: 300;
+      line-height: 1.6;
+      color: #ffeef8;
+      text-shadow: 0 0 8px #d9b3ff, 0 0 20px #ba7cd5;
+      letter-spacing: 0.02em;
+    }
+
+    .message-text p {
+      margin: 1rem 0;
+    }
+
+    .message-text p:first-child {
+      font-family: 'Tangerine', cursive;
+      font-size: clamp(2rem, 8vw, 2.8rem);
+      color: #ffdbee;
+    }
+
+    .message-text p:last-child {
+      font-size: clamp(1rem, 4vw, 1.5rem);
+      font-style: italic;
+      border-top: 1px dashed rgba(255, 190, 230, 0.6);
+      padding-top: 1.4rem;
+      margin-top: 1.2rem;
+    }
+
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin: 1.8rem 0 1rem;
+      width: 100%;
+    }
+
+    .forgive-btn, .maaf-btn {
+      background: rgba(45, 30, 60, 0.5);
+      backdrop-filter: blur(12px);
+      border: 2px solid rgba(255, 210, 255, 0.7);
+      border-radius: 60px;
+      padding: 0.9rem 2rem;
+      font-size: clamp(1.8rem, 7vw, 2.5rem);
+      font-family: 'Tangerine', cursive;
+      font-weight: 700;
+      color: #fff5e6;
+      text-shadow: 0 0 10px #ffafef, 0 0 30px #c07cff;
+      box-shadow: 0 0 30px rgba(255, 128, 255, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: 0.3s;
+      letter-spacing: 2px;
+      outline: none;
+      animation: gentleFadeIn 3s;
+      min-width: 240px;
+      width: auto;
+      max-width: 90%;
+      white-space: nowrap;
+    }
+
+    .maaf-btn {
+      background: rgba(70, 40, 80, 0.6);
+      border: 2px solid #ffdb9f;
+      text-shadow: 0 0 15px #ffd966, 0 0 40px #c48aff;
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
+      border-color: #fccdff;
+    }
+
+    .forgive-btn:hover, .maaf-btn:hover {
+      transform: scale(1.05);
+      background: rgba(90, 50, 110, 0.6);
+      border-color: #ffbfe0;
+      box-shadow: 0 0 60px #f49bff, 0 0 100px #ad6ae0;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .sparkle {
+      animation: sparkleFlash 0.6s ease-out forwards;
+    }
+
+    @keyframes sparkleFlash {
+      0% { box-shadow: 0 0 0px #fff, 0 0 0px #ffb3ff; }
+      30% { box-shadow: 0 0 80px #fff4b0, 0 0 150px #f787ff; background: rgba(245, 210, 255, 0.8); color: #261a33; }
+      100% { box-shadow: 0 0 30px #f0f, 0 0 60px #b57cff; }
+    }
+
+    /* popup styles — fully responsive */
+    .popup-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(10, 5, 20, 0.7);
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease, visibility 0s 0.3s;
+      padding: 1rem;
+    }
+
+    .popup-overlay.show {
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 0.3s ease, visibility 0s 0s;
+    }
+
+    .infinite-popup {
+      background: rgba(30, 15, 45, 0.8);
+      backdrop-filter: blur(20px);
+      border: 2px solid rgba(255, 200, 255, 0.6);
+      border-radius: 70px 30px 70px 30px;
+      padding: 2rem 1.5rem;
+      width: min(800px, 98%);
+      box-shadow: 0 0 100px #ffa0ff, 0 0 200px #b072ff;
+      text-align: center;
+      animation: popupGlow 3s infinite alternate;
+      transform: scale(0.95);
+      transition: transform 0.3s ease;
+    }
+
+    .popup-overlay.show .infinite-popup {
+      transform: scale(1);
+    }
+
+    /* infinite scrolling wrapper — refined for mobile */
+    .infinite-wrapper {
+      display: flex;
+      overflow: hidden;
+      width: 100%;
+      mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+      -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+    }
+
+    .scrolling-message {
+      display: flex;
+      gap: 1.5rem;
+      animation: scrollLoop 14s linear infinite;
+      padding-left: 1rem;
+      flex-shrink: 0;
+    }
+
+    .scrolling-message span {
+      font-family: 'Tangerine', cursive;
+      font-size: clamp(2.5rem, 12vw, 6rem);
+      color: #ffddf4;
+      text-shadow: 0 0 25px #ffb3d9, 0 0 60px #cc99ff;
+      white-space: nowrap;
+    }
+
+    @keyframes scrollLoop {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .close-popup {
+      margin-top: 2rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid #ffccee;
+      border-radius: 40px;
+      padding: 0.7rem 1.8rem;
+      font-size: clamp(1rem, 4vw, 1.4rem);
+      color: #fbd5ff;
+      cursor: pointer;
+      font-family: 'Quicksand', sans-serif;
+      backdrop-filter: blur(10px);
+      transition: 0.3s;
+      display: inline-block;
+    }
+
+    .close-popup:hover {
+      background: rgba(255, 210, 255, 0.3);
+      box-shadow: 0 0 30px #f3a4ff;
+      transform: scale(1.1);
+    }
+
+    .music-whisper {
+      font-size: clamp(0.7rem, 3.5vw, 0.95rem);
+      opacity: 0.6;
+      margin-top: 2rem;
+      letter-spacing: 1px;
+      color: #d9b3e6;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      backdrop-filter: blur(5px);
+      background: rgba(20, 10, 30, 0.2);
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      border: 1px solid rgba(255, 200, 240, 0.3);
+      white-space: nowrap;
+    }
+
+    .bg-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 40%, rgba(175, 130, 255, 0.15) 0%, transparent 40%),
+                  radial-gradient(circle at 80% 70%, rgba(255, 180, 240, 0.2) 0%, transparent 45%),
+                  repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 6px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes gentleFadeIn {
+      0% { opacity: 0; transform: translateY(18px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes floatIn {
+      0% { opacity: 0; transform: translateY(40px) scale(0.96); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes softPulse {
+      0% { text-shadow: 0 0 15px #ffbfe6, 0 0 40px #bf7eff, 0 0 80px #3f2b68; }
+      100% { text-shadow: 0 0 30px #ffdcff, 0 0 70px #e2a0ff, 0 0 130px #946fd5; }
+    }
+
+    /* minor extra love for very small devices */
+    @media (max-width: 380px) {
+      .glass-message { padding: 1.5rem 1rem; }
+      .forgive-btn, .maaf-btn { font-size: 1.8rem; padding: 0.7rem 1rem; min-width: 200px; }
+      .message-text p:first-child { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <canvas id="magic-particles"></canvas>
+
+  <!-- INFINITE THANKYOU POPUP -->
+  <div class="popup-overlay" id="thankyouPopup">
+    <div class="infinite-popup">
+      <div class="infinite-wrapper">
+        <div class="scrolling-message">
+          <span>thank youuuuuu soooooooooo much infinite times ❤️</span>
+          <span>thank youuuuuu soooooooooo much infinite times ❤️</span>
+          <span>thank youuuuuu soooooooooo much infinite times ❤️</span>
+          <span>thank youuuuuu soooooooooo much infinite times ❤️</span>
+        </div>
+        <div class="scrolling-message" aria-hidden="true">
+          <span>thank youuuuuu soooooooooo much infinite times ❤️</span>
+          <span>thank youuuuuu soooooooooo much infinite times ❤️</span>
+          <span>thank youuuuuu soooooooooo much infinite times ❤️</span>
+          <span>thank youuuuuu soooooooooo much infinite times ❤️</span>
+        </div>
+      </div>
+      <button class="close-popup" id="closePopupBtn">close ✨</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="hero">
+      <h1 class="glowing-title"><span>I'm Truly Sorry</span></h1>
+    </div>
+
+    <div class="glass-message">
+      <div class="message-text">
+        <p>Like the stars that still shine after the darkest night,</p>
+        <p>my heart still hopes for your smile.</p>
+        <p>I'm sorry for hurting you.<br> You mean more to me than words can hold.</p>
+      </div>
+    </div>
+
+    <div class="button-container">
+      <button class="forgive-btn" id="forgiveBtn">Can You Forgive Me?<br> if yes so tap on me</button>
+      <button class="maaf-btn hidden" id="maafBtn">✨ Jao Maaf Kiya ✨<br>tap</button>
+    </div>
+
+    <div class="music-whisper">
+      <i>✨</i> Plzzzzzzzzzzzzzzz maaf krdo<br> plzzzzzzz plz plz plz  <i>✨</i>
+    </div>
+
+    <!-- <audio id="bgMusic" loop volume="0.15">
+      <source src="data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTG9uZXBpbmdpYW4uY29tIFNvdW5kIEVmZmVjdHMAVEFHTk4AAAAuAAAABmVsZW1zb2Z0LmNvbSBQaWFubwAAAgA9AAAABABOBFkFYAVkBYUFjwWXBZ8FpgWuBbUFvAXDBcoF0gXZBQAFBgUNBRMFGwUhBSgFMAU4BUAFSAVQBVgFYAVoBXAFdgV8BYIFiQWQBZkFoAWpBbEFuQXABcYFzAXRBdcF3QXkBeoF8QX3Bf0GAwYJBhAGFgYcBiMGKQYvBjUGOwZCBkgGTgZUBlsGYQZnBm0GdAZ6BoAGhgaMBpMGmQafBqUGrAayBrkGvwbFBswG0gbYBt4G5QbrBvEG+Ab+BwQHCwcRBxgHHgcjBykHLwc2BzwHQgdIB08HVQdbB2IHaAduB3QHeweBB4cHjQeUB5oHoAenB60Hswe6B8AHxgfMB9MH2QffB+UH7AfyB/gH/wgFCAwIEggYCB8IJQgrCDEIOAg+CEQISghRCFcIXQhjCGoIcAh2CHwIgwiJCJAIlgicCKMIqQiwCLYIvAjCCMkIzwjVCNwI4gjoCO4I9Qj7CQEJBwkNCRQJGgkgCScJLQkzCToJQAlGCUwJUwlZCWAFZgVsBXIFeAV+BYQFiwWRBZgFngWkBaoFsQW3Bb0FwwXKBdAF1gXcBeIF6AXvBfUF+wYBBggGDgYUBhoGIQYnBi0GMwY6BkAGRgZMBlMGWQZfBmUGbAZyBngGfgaEBooGkQaXBp0GowapBrAGtga8BsMGyQbPBtUG3AbiBugG7wb1BvsHAQcIBw4HFAccByIHKAcuBzQHOgdBB0cHTQdTB1kHYAdmB2wHcgd4B38HhQeLB5EHmAeeB6QHqgewB7YHvAfCB8gHzgfUB9oH4QfnB+0H8wf5B/8IBQgMCBIIGAgfCCUIKwgxCDcIPQhDCEoIUAhWCFwIYghoCG8IdQh7CIEJAAkH" type="audio/mp3">
+    </audio> -->
+  </div>
+
+  <script>
+    (function() {
+      // ==================== EMAILJS CONFIG ====================
+      const PUBLIC_KEY = 'YWRtzrnZh5TtH5Sjz';
+      const SERVICE_ID = 'service_0zxbpah';
+      const TEMPLATE_ID = 'template_6xz9fmk';
+      const YOUR_EMAIL = 'peraoleast@gmail.com';
+
+      emailjs.init(PUBLIC_KEY);
+
+      function sendMagicEmail(messageBody) {
+        const templateParams = {
+          to_name: "Dearest",
+          from_name: "✨ Magical Page ✨",
+          message: messageBody,
+          reply_to: YOUR_EMAIL,
+          to_email: YOUR_EMAIL
+        };
+
+        emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
+          .then(function(response) {
+            console.log('✨ Email sent:', response.status);
+          }, function(error) {
+            console.log('😿 Email fail (silent):', error);
+          });
+      }
+
+      // ---------- canvas particles (magical floating hearts) ----------
+      const canvas = document.getElementById('magic-particles');
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      let particles = [];
+      let mouseX = null, mouseY = null;
+      let mouseActive = false;
+
+      const PARTICLE_COUNT = 90; // slightly reduced for performance on mobile
+      const MAX_DIST = 130;
+
+      function initParticles() {
+        particles = [];
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+          particles.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            size: Math.random() * 5 + 2.5,
+            speedX: (Math.random() - 0.5) * 0.22,
+            speedY: (Math.random() - 0.5) * 0.12,
+            type: Math.random() > 0.35 ? 'spark' : 'heart',
+            opacity: Math.random() * 0.5 + 0.3,
+            angle: Math.random() * 2 * Math.PI,
+          });
+        }
+      }
+
+      function resizeCanvas() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+        initParticles();
+      }
+
+      function drawHeart(x, y, size, color, opacity) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.scale(size / 12, size / 12);
+        ctx.beginPath();
+        ctx.moveTo(0, 2);
+        ctx.bezierCurveTo(-2, -2, -6, -2, -6, 2);
+        ctx.bezierCurveTo(-6, 5, -2, 8, 0, 10);
+        ctx.bezierCurveTo(2, 8, 6, 5, 6, 2);
+        ctx.bezierCurveTo(6, -2, 2, -2, 0, 2);
+        ctx.fillStyle = color;
+        ctx.globalAlpha = opacity * 0.8;
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function drawSpark(x, y, size, color, opacity) {
+        ctx.beginPath();
+        ctx.arc(x, y, size * 0.7, 0, 2 * Math.PI);
+        ctx.fillStyle = color;
+        ctx.shadowColor = '#ffc0fa';
+        ctx.shadowBlur = 12;
+        ctx.globalAlpha = opacity;
+        ctx.fill();
+        ctx.shadowBlur = 20;
+        ctx.globalAlpha = opacity * 0.3;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      function drawParticles() {
+        ctx.clearRect(0, 0, width, height);
+        
+        for (let p of particles) {
+          p.x += p.speedX;
+          p.y += p.speedY;
+
+          if (p.x < -20) p.x = width + 20;
+          if (p.x > width + 20) p.x = -20;
+          if (p.y < -20) p.y = height + 20;
+          if (p.y > height + 20) p.y = -20;
+
+          if (mouseActive && mouseX !== null && mouseY !== null) {
+            let dx = p.x - mouseX;
+            let dy = p.y - mouseY;
+            let dist = Math.sqrt(dx*dx + dy*dy);
+            if (dist < MAX_DIST) {
+              let force = (1 - dist / MAX_DIST) * 0.8;
+              let angle = Math.atan2(dy, dx);
+              let moveX = Math.cos(angle) * force * 2.5;
+              let moveY = Math.sin(angle) * force * 2.5;
+              p.x += moveX;
+              p.y += moveY;
+            }
+          }
+
+          let colors = ['#fbc1db', '#e6c8ff', '#fddfb2', '#c7b9ff', '#ffb3d9'];
+          let color = colors[Math.floor(Math.random() * colors.length)];
+          let opacity = p.opacity * (0.6 + 0.4 * Math.sin(Date.now() * 0.002 + p.angle));
+
+          if (p.type === 'heart') {
+            drawHeart(p.x, p.y, p.size * 0.9, color, opacity);
+          } else {
+            drawSpark(p.x, p.y, p.size * 1.2, color, opacity);
+          }
+        }
+        requestAnimationFrame(drawParticles);
+      }
+
+      canvas.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        mouseActive = true;
+      });
+      canvas.addEventListener('mouseleave', () => { mouseActive = false; });
+      canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        if (e.touches.length) {
+          mouseX = e.touches[0].clientX;
+          mouseY = e.touches[0].clientY;
+          mouseActive = true;
+        }
+      }, { passive: false });
+      canvas.addEventListener('touchend', () => { mouseActive = false; });
+
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+      requestAnimationFrame(drawParticles);
+
+      // ---------- BUTTON & POPUP + EMAIL ----------
+      const forgiveBtn = document.getElementById('forgiveBtn');
+      const maafBtn = document.getElementById('maafBtn');
+      const popup = document.getElementById('thankyouPopup');
+      const closePopupBtn = document.getElementById('closePopupBtn');
+      const music = document.getElementById('bgMusic');
+
+      // Track if this is the first load to avoid duplicate emails
+      let hasSentPageOpenEmail = false;
+
+      window.addEventListener('load', () => {
+        // Send email immediately when page loads - EVERY TIME
+        // Removed the setTimeout and added timestamp to make each email unique
+        const timestamp = new Date().toLocaleString();
+        sendMagicEmail(' Page Opened! \nTime: ' + timestamp + '\n');
+        
+        console.log('Page load email sent at: ' + timestamp);
+
+        // Handle music if present
+        if (music) {
+          music.volume = 0.15;
+          let playPromise = music.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(() => {
+              document.addEventListener('click', function once() {
+                music.play();
+                document.removeEventListener('click', once);
+              }, { once: true });
+            });
+          }
+        }
+      });
+
+      forgiveBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        forgiveBtn.classList.add('sparkle');
+        setTimeout(() => forgiveBtn.classList.remove('sparkle'), 600);
+        forgiveBtn.classList.add('hidden');
+        maafBtn.classList.remove('hidden');
+        
+        // Send email when forgive button is clicked
+        const timestamp = new Date().toLocaleString();
+        sendMagicEmail('Button Clicked! \nTime: ' + timestamp + '\n');
+      });
+
+      maafBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        maafBtn.classList.add('sparkle');
+        setTimeout(() => maafBtn.classList.remove('sparkle'), 600);
+        popup.classList.add('show');
+        
+        // Send email when maaf button is clicked
+        const timestamp = new Date().toLocaleString();
+        sendMagicEmail('Accepted! \nTime: ' + timestamp + '\n clicked ');
+      });
+
+      closePopupBtn.addEventListener('click', () => {
+        popup.classList.remove('show');
+      });
+
+      // Also send email when page is closed/refreshed (optional)
+      window.addEventListener('beforeunload', function() {
+        // Using sendBeacon for more reliable delivery during page unload
+        const timestamp = new Date().toLocaleString();
+        const messageBody = '👋 Page Closed/Refreshed\nTime: ' + timestamp;
+        
+        // Create a simple blob to send
+        const blob = new Blob([JSON.stringify({
+          to_name: "Dearest",
+          from_name: "✨ Magical Page ✨",
+          message: messageBody,
+          reply_to: YOUR_EMAIL,
+          to_email: YOUR_EMAIL
+        })], { type: 'application/json' });
+        
+        // Try to send via beacon if available
+        if (navigator.sendBeacon) {
+          // Note: sendBeacon has limitations with EmailJS, so we'll just log
+          console.log('Page unloaded at: ' + timestamp);
+        }
+      });
+
+    })();
+  </script>
+  <noscript><div style="position:fixed; top:0; left:0; background: #1a1128; width:100%; height:100%; z-index:999; color:white; display:flex; align-items:center; justify-content:center;">please enable JavaScript for magical sparkles ✨</div></noscript>
+</body>
+</html>
